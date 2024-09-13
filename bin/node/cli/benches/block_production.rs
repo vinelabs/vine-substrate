@@ -18,8 +18,8 @@
 
 use criterion::{criterion_group, criterion_main, BatchSize, Criterion, Throughput};
 
-use node_peer_runtime::{constants::currency::*, BalancesCall};
 use node_cli::service::{create_extrinsic, FullClient};
+use node_peer_runtime::{constants::currency::*, BalancesCall};
 use sc_block_builder::{BlockBuilderProvider, BuiltBlock, RecordProof};
 use sc_client_api::execution_extensions::ExecutionStrategies;
 use sc_consensus::{

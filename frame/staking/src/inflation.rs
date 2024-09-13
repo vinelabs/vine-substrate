@@ -38,6 +38,13 @@ pub fn compute_total_payout<N>(
 where
 	N: AtLeast32BitUnsigned + Clone,
 {
+
+   let 	yearly_inflation = &PiecewiseLinear{
+     points: yearly_inflation.points,
+	 maximum: Perbill::from_percent(1/10)
+
+   };
+
 	// Milliseconds per year for the Julian year (365.25 days).
 	const MILLISECONDS_PER_YEAR: u64 = 1000 * 3600 * 24 * 36525 / 100;
 
@@ -45,7 +52,9 @@ where
 	let payout = portion *
 		yearly_inflation
 			.calculate_for_fraction_times_denominator(npos_token_staked, total_tokens.clone());
+
 	let maximum = portion * (yearly_inflation.maximum * total_tokens);
+
 	(payout, maximum)
 }
 

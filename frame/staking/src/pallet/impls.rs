@@ -146,7 +146,6 @@ impl<T: Config> Pallet<T> {
 			Error::<T>::InvalidEraToReward
 				.with_weight(T::WeightInfo::payout_stakers_alive_staked(0))
 		);
-
 		// Note: if era has no reward to be claimed, era may be future. better not to update
 		// `ledger.claimed_rewards` in this case.
 		let era_payout = <ErasValidatorReward<T>>::get(&era).ok_or_else(|| {

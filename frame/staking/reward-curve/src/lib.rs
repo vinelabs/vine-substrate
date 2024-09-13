@@ -19,8 +19,10 @@
 
 mod log;
 
+use keyword::max_inflation;
 use log::log2;
 use proc_macro::TokenStream;
+
 use proc_macro2::{Span, TokenStream as TokenStream2};
 use proc_macro_crate::{crate_name, FoundCrate};
 use quote::{quote, ToTokens};
@@ -295,7 +297,6 @@ fn compute_points(input: &INposInput) -> Vec<(u32, u32)> {
 
 	let mut delta_y = max_length;
 	let mut y = input.max_inflation;
-
 	// The algorithm divide the curve in segment with vertical len and horizontal len less
 	// than `max_length`. This is not very accurate in case of very consequent steep.
 	while delta_y != 0 {
@@ -305,7 +306,6 @@ fn compute_points(input: &INposInput) -> Vec<(u32, u32)> {
 			delta_y = delta_y.saturating_sub(1);
 			continue
 		}
-
 		let next_x = inpos.compute_opposite_after_x_ideal(next_y);
 
 		if (next_x - points.last().unwrap().0) > max_length {

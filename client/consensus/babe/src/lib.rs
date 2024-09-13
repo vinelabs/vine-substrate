@@ -254,7 +254,7 @@ impl Epoch {
 		epoch.start_slot = Slot::from(start_slot);
 
 		epoch
-}
+	}
 }
 
 /// Errors encountered by the babe authorship task.
@@ -616,7 +616,7 @@ async fn answer_requests<B: BlockT, C>(
 						.map_err(|e| Error::<B>::ForkTree(Box::new(e)))?
 						.ok_or(Error::<B>::FetchEpoch(parent_hash))?;
 
-					let  viable_epoch = epoch_changes
+					let viable_epoch = epoch_changes
 						.viable_epoch(&epoch_descriptor, |slot| Epoch::genesis(&config, slot))
 						.ok_or(Error::<B>::FetchEpoch(parent_hash))?;
 

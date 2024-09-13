@@ -18,11 +18,11 @@
 use codec::{Decode, Encode};
 use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
 use frame_support::Hashable;
+use node_executor::ExecutorDispatch;
 use node_peer_runtime::{
 	constants::currency::*, Block, BuildStorage, CheckedExtrinsic, GenesisConfig, Header,
 	RuntimeCall, UncheckedExtrinsic,
 };
-use node_executor::ExecutorDispatch;
 use node_primitives::{BlockNumber, Hash};
 use node_testing::keyring::*;
 use sc_executor::{

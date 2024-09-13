@@ -685,7 +685,14 @@ impl<T: Config> StakingLedger<T> {
 
 /// A record of the nominations made by a specific account.
 #[derive(
-	PartialEqNoBound, EqNoBound, CloneNoBound, Encode, Decode, RuntimeDebugNoBound, TypeInfo, MaxEncodedLen,
+	PartialEqNoBound,
+	EqNoBound,
+	CloneNoBound,
+	Encode,
+	Decode,
+	RuntimeDebugNoBound,
+	TypeInfo,
+	MaxEncodedLen,
 )]
 #[codec(mel_bound())]
 #[scale_info(skip_type_params(T))]
@@ -839,7 +846,9 @@ impl<Balance: Default> EraPayout<Balance> for () {
 /// Adaptor to turn a `PiecewiseLinear` curve definition into an `EraPayout` impl, used for
 /// backwards compatibility.
 pub struct ConvertCurve<T>(sp_std::marker::PhantomData<T>);
-impl<Balance: AtLeast32BitUnsigned + Clone, T: Get<&'static PiecewiseLinear<'static>>>
+//impl<Balance: AtLeast32BitUnsigned + Clone , T: Get<&'static PiecewiseLinear<'static>>>
+impl<Balance: AtLeast32BitUnsigned + Clone + From<u128>, T: Get<&'static PiecewiseLinear<'static>>>
+
 	EraPayout<Balance> for ConvertCurve<T>
 {
 	fn era_payout(
@@ -847,13 +856,16 @@ impl<Balance: AtLeast32BitUnsigned + Clone, T: Get<&'static PiecewiseLinear<'sta
 		total_issuance: Balance,
 		era_duration_millis: u64,
 	) -> (Balance, Balance) {
-		let (validator_payout, max_payout) = inflation::compute_total_payout(
+		let (mut validator_payout, max_payout) = inflation::compute_total_payout(
+			//let ( validator_payout, max_payout) = inflation::compute_total_payout(
+
 			T::get(),
 			total_staked,
 			total_issuance,
 			// Duration of era; more than u64::MAX is rewarded as u64::MAX.
 			era_duration_millis,
 		);
+  validator_payout  = validator_payout * 10u128.into()/ 100u128.into();
 		let rest = max_payout.saturating_sub(validator_payout.clone());
 		(validator_payout, rest)
 	}

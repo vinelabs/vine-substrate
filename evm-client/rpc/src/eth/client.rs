@@ -56,8 +56,8 @@ where
 			Ok(SyncStatus::Info(SyncInfo {
 				starting_block: U256::zero(),
 				current_block: block_number,
-				// TODO `highest_block` is not correct, should load `best_seen_block` from NetworkWorker,
-				// but afaik that is not currently possible in Substrate:
+				// TODO `highest_block` is not correct, should load `best_seen_block` from
+				// NetworkWorker, but afaik that is not currently possible in Substrate:
 				// https://github.com/paritytech/substrate/issues/7311
 				highest_block: block_number,
 				warp_chunks_amount: None,
@@ -95,9 +95,9 @@ where
 	}
 
 	pub fn block_number(&self) -> Result<U256> {
-		Ok(U256::from(
-			UniqueSaturatedInto::<u128>::unique_saturated_into(self.client.info().best_number),
-		))
+		Ok(U256::from(UniqueSaturatedInto::<u128>::unique_saturated_into(
+			self.client.info().best_number,
+		)))
 	}
 
 	pub fn chain_id(&self) -> Result<Option<U64>> {
