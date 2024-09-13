@@ -28,7 +28,9 @@ use core::ops::Sub;
 pub struct PiecewiseLinear<'a> {
 	/// Array of points. Must be in order from the lowest abscissas to the highest.
 	pub points: &'a [(Perbill, Perbill)],
-	/// The maximum value that can be returned.
+	/// The maximum value
+	/// th\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\at can be
+	/// returned.
 	pub maximum: Perbill,
 }
 

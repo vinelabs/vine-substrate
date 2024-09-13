@@ -27,9 +27,7 @@ use sp_core::{H160, U256};
 use std::{collections::BTreeMap, str::FromStr};
 
 pub fn new_test_ext() -> sp_io::TestExternalities {
-	let mut t = frame_system::GenesisConfig::default()
-		.build_storage::<Test>()
-		.unwrap();
+	let mut t = frame_system::GenesisConfig::default().build_storage::<Test>().unwrap();
 
 	let mut accounts = BTreeMap::new();
 	accounts.insert(
@@ -103,9 +101,7 @@ fn decode_limit_too_high() {
 
 		assert_eq!(
 			Dispatch::<Test>::execute(&mut handle),
-			Err(PrecompileFailure::Error {
-				exit_status: ExitError::Other("decode failed".into())
-			})
+			Err(PrecompileFailure::Error { exit_status: ExitError::Other("decode failed".into()) })
 		);
 	});
 }

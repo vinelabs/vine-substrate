@@ -21,18 +21,17 @@
 use crate::keyring::*;
 use node_peer_runtime::{
 	constants::currency::*, wasm_binary_unwrap, AccountId, AssetsConfig, BabeConfig,
-	BalancesConfig, GenesisConfig, GrandpaConfig, IndicesConfig, SessionConfig, SocietyConfig,
-	StakerStatus, StakingConfig, SystemConfig, BABE_GENESIS_EPOCH_CONFIG,EVMConfig,EthereumConfig,EVMChainIdConfig,
+	BalancesConfig, EVMChainIdConfig, EVMConfig, EthereumConfig, GenesisConfig, GrandpaConfig,
+	IndicesConfig, SessionConfig, SocietyConfig, StakerStatus, StakingConfig, SystemConfig,
+	BABE_GENESIS_EPOCH_CONFIG,
 };
+use sp_core::{H160, U256};
 use sp_keyring::{Ed25519Keyring, Sr25519Keyring};
 use sp_runtime::Perbill;
-use sp_core::{ H160, U256};
-use std::str::FromStr;
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, str::FromStr};
 /// Create genesis runtime configuration for tests.
 pub fn config(code: Option<&[u8]>) -> GenesisConfig {
 	config_endowed(code, Default::default())
-	
 }
 
 /// Create genesis runtime configuration for tests with some extra
@@ -99,7 +98,7 @@ pub fn config_endowed(code: Option<&[u8]>, extra_endowed: Vec<AccountId>) -> Gen
 		alliance_motion: Default::default(),
 		nomination_pools: Default::default(),
 
-		evm_chain_id: EVMChainIdConfig { chain_id:42 },
+		evm_chain_id: EVMChainIdConfig { chain_id: 42 },
 		evm: EVMConfig {
 			accounts: {
 				let mut map = BTreeMap::new();
@@ -108,7 +107,8 @@ pub fn config_endowed(code: Option<&[u8]>, extra_endowed: Vec<AccountId>) -> Gen
 					// Derived from SS58 (42 prefix) address
 					// SS58: 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY
 					// hex: 0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d
-					// Using the full hex key, truncating to the first 20 bytes (the first 40 hex chars)
+					// Using the full hex key, truncating to the first 20 bytes (the first 40 hex
+					// chars)
 					H160::from_str("d43593c715fdd31c61141abd04a99fd6822c8558")
 						.expect("internal H160 is valid; qed"),
 					fp_evm::GenesisAccount {
@@ -136,6 +136,5 @@ pub fn config_endowed(code: Option<&[u8]>, extra_endowed: Vec<AccountId>) -> Gen
 		ethereum: EthereumConfig {},
 		dynamic_fee: Default::default(),
 		base_fee: Default::default(),
-
 	}
 }

@@ -67,16 +67,14 @@ where
 		if !valid_call {
 			return Err(PrecompileFailure::Error {
 				exit_status: ExitError::Other("invalid call".into()),
-			});
+			})
 		}
 
 		if let Some(gas) = target_gas {
 			let valid_weight =
 				info.weight.ref_time() <= T::GasWeightMapping::gas_to_weight(gas, false).ref_time();
 			if !valid_weight {
-				return Err(PrecompileFailure::Error {
-					exit_status: ExitError::OutOfGas,
-				});
+				return Err(PrecompileFailure::Error { exit_status: ExitError::OutOfGas })
 			}
 		}
 
@@ -94,7 +92,7 @@ where
 					exit_status: ExitSucceed::Stopped,
 					output: Default::default(),
 				})
-			}
+			},
 			Err(e) => Err(PrecompileFailure::Error {
 				exit_status: ExitError::Other(
 					format!("dispatch execution failed: {}", <&'static str>::from(e)).into(),

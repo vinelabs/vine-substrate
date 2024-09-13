@@ -13,6 +13,9 @@ publish = false
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 
+[lib]
+# proc-macro = true
+
 [dependencies]
 
 # third-party dependencies

@@ -22,7 +22,6 @@
 #![warn(unused_must_use, unsafe_code, unused_variables, unused_must_use)]
 
 use codec::{Decode, Encode};
-use sp_staking::{SessionIndex};
 use frame_support::{
 	dispatch::{DispatchResultWithPostInfo, Pays},
 	ensure,
@@ -40,6 +39,7 @@ use sp_runtime::{
 	ConsensusEngineId, KeyTypeId, Permill,
 };
 use sp_session::{GetSessionNumber, GetValidatorCount};
+use sp_staking::SessionIndex;
 use sp_std::prelude::*;
 
 use sp_consensus_babe::{
@@ -103,7 +103,7 @@ impl EpochChangeTrigger for SameAuthoritiesForever {
 			let authorities = <Pallet<T>>::authorities();
 			let next_authorities = authorities.clone();
 
-			<Pallet<T>>::enact_epoch_change(authorities, next_authorities,None);
+			<Pallet<T>>::enact_epoch_change(authorities, next_authorities, None);
 		}
 	}
 }
@@ -210,7 +210,6 @@ pub mod pallet {
 	#[pallet::getter(fn skipped_epochs)]
 	pub(super) type SkippedEpochs<T> =
 		StorageValue<_, BoundedVec<(u64, SessionIndex), ConstU32<100>>, ValueQuery>;
-
 
 	/// Current epoch authorities.
 	#[pallet::storage]
@@ -860,17 +859,13 @@ impl<T: Config> Pallet<T> {
 		this_randomness
 	}
 
-
 	/// Returns the session index that was live when the given epoch happened,
 	/// taking into account any skipped epochs.
 	///
 	/// This function is only well defined for epochs that actually existed,
 	/// e.g. if we skipped from epoch 10 to 20 then a call for epoch 15 (which
 	/// didn't exist) will return an incorrect session index.
-	pub(crate) fn 
-	
-	
-	session_index_for_epoch(epoch_index: u64) -> SessionIndex {
+	pub(crate) fn session_index_for_epoch(epoch_index: u64) -> SessionIndex {
 		let skipped_epochs = SkippedEpochs::<T>::get();
 		match skipped_epochs.binary_search_by_key(&epoch_index, |(epoch_index, _)| *epoch_index) {
 			// we have an exact match so we just return the given session index
@@ -893,7 +888,6 @@ impl<T: Config> Pallet<T> {
 			},
 		}
 	}
-
 
 	fn do_report_equivocation(
 		reporter: Option<T::AccountId>,
@@ -1005,9 +999,10 @@ impl<T: Config> sp_runtime::BoundToRuntimeAppPublic for Pallet<T> {
 	type Public = AuthorityId;
 }
 
-impl<T: Config> OneSessionHandler<T::AccountId> for Pallet<T> 
+impl<T: Config> OneSessionHandler<T::AccountId> for Pallet<T>
 where
-	T: pallet_session::Config, {
+	T: pallet_session::Config,
+{
 	type Key = AuthorityId;
 
 	fn on_genesis_session<'a, I: 'a>(validators: I)
@@ -1041,8 +1036,7 @@ where
 		);
 
 		let session_index = <pallet_session::Pallet<T>>::current_index();
-		Self::enact_epoch_change(bounded_authorities, next_bounded_authorities,  Some(session_index))
-		
+		Self::enact_epoch_change(bounded_authorities, next_bounded_authorities, Some(session_index))
 	}
 
 	fn on_disabled(i: u32) {

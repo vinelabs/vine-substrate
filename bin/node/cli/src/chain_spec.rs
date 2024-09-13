@@ -21,10 +21,10 @@
 use grandpa_primitives::AuthorityId as GrandpaId;
 use node_peer_runtime::{
 	constants::currency::*, wasm_binary_unwrap, AuthorityDiscoveryConfig, BabeConfig,
-	BalancesConfig, Block, CouncilConfig, DemocracyConfig, ElectionsConfig, GrandpaConfig,
-	ImOnlineConfig, IndicesConfig, MaxNominations, NominationPoolsConfig, SessionConfig,
-	SessionKeys, SocietyConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig,
-	TechnicalCommitteeConfig,EVMConfig,EthereumConfig,EVMChainIdConfig,
+	BalancesConfig, Block, CouncilConfig, DemocracyConfig, EVMChainIdConfig, EVMConfig,
+	ElectionsConfig, EthereumConfig, GrandpaConfig, ImOnlineConfig, IndicesConfig, MaxNominations,
+	NominationPoolsConfig, SessionConfig, SessionKeys, SocietyConfig, StakerStatus, StakingConfig,
+	SudoConfig, SystemConfig, TechnicalCommitteeConfig,
 };
 use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 use sc_chain_spec::ChainSpecExtension;
@@ -33,14 +33,13 @@ use sc_telemetry::TelemetryEndpoints;
 use serde::{Deserialize, Serialize};
 use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use sp_consensus_babe::AuthorityId as BabeId;
-use sp_core::{crypto::UncheckedInto, sr25519, Pair, Public,H160, U256};
+use sp_core::{crypto::UncheckedInto, sr25519, Pair, Public, H160, U256};
 use sp_runtime::{
 	traits::{IdentifyAccount, Verify},
 	Perbill,
 };
 
-use std::str::FromStr;
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, str::FromStr};
 
 pub use node_peer_runtime::GenesisConfig;
 pub use node_primitives::{AccountId, Balance, Signature};
@@ -180,7 +179,7 @@ fn staging_testnet_config_genesis() -> GenesisConfig {
 
 	let endowed_accounts: Vec<AccountId> = vec![root_key.clone()];
 
-	testnet_genesis(initial_authorities, vec![], root_key, Some(endowed_accounts),42)
+	testnet_genesis(initial_authorities, vec![], root_key, Some(endowed_accounts), 42)
 }
 
 /// Staging testnet config.
@@ -380,8 +379,7 @@ pub fn testnet_genesis(
 			..Default::default()
 		},
 
-	// EVM compatibility
-
+		// EVM compatibility
 		evm_chain_id: EVMChainIdConfig { chain_id },
 		evm: EVMConfig {
 			accounts: {
@@ -391,7 +389,8 @@ pub fn testnet_genesis(
 					// Derived from SS58 (42 prefix) address
 					// SS58: 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY
 					// hex: 0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d
-					// Using the full hex key, truncating to the first 20 bytes (the first 40 hex chars)
+					// Using the full hex key, truncating to the first 20 bytes (the first 40 hex
+					// chars)
 					H160::from_str("d43593c715fdd31c61141abd04a99fd6822c8558")
 						.expect("internal H160 is valid; qed"),
 					fp_evm::GenesisAccount {
@@ -407,7 +406,8 @@ pub fn testnet_genesis(
 					H160::from_str("cb90cAD4fafD23Eb939c028263520156AA078831")
 						.expect("internal H160 is valid; qed"),
 					fp_evm::GenesisAccount {
-						balance: U256::from_str("0xfffffffffffffff").expect("internal U256 is valid; qed"),
+						balance: U256::from_str("0xfffffffffffffff")
+							.expect("internal U256 is valid; qed"),
 						code: Default::default(),
 						nonce: Default::default(),
 						storage: Default::default(),
@@ -420,9 +420,6 @@ pub fn testnet_genesis(
 		dynamic_fee: Default::default(),
 		base_fee: Default::default(),
 	}
-
-
-	
 }
 
 fn development_config_genesis() -> GenesisConfig {
